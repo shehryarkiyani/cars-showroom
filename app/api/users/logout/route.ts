@@ -14,6 +14,7 @@ export async function GET() {
       httpOnly: true,
       expires: new Date(0),
     });
+    return response;
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

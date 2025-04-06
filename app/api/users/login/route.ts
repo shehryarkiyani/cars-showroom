@@ -23,15 +23,17 @@ export async function POST(request: NextRequest) {
       username: user.username,
       email: user.email,
     };
-    const token = await jwt.sign(
-      tokenData,
-      process.env.TOKEN_SECRET || "abc1234",
-      { expiresIn: "1h" }
-    );
-    return NextResponse.json(
+    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
+      expiresIn: "1h",
+    });
+    const response = NextResponse.json(
       { message: "User logged in successfully", accessToken: token },
-      { status: 500 }
+      { status: 200 }
     );
+    response.cookies.set("token", token, {
+      httpOnly: true,
+    });
+    return response;
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
